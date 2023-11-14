@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}{{ request.user.first_name }} {{ request.user.last_name }}{% endblock %}
+{% block content %}
+<div class="user-profile"><h2>{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+    <p>{{ request.user.profile.city }}</p>
+    <p>{{ request.user.profile.date_of_birth }}</p>
+    <a href="{% url 'edit_profile' %}">Редактировать</a>
+    <p>{{ request.user.profile.balance }} $</p>
+    <form action="{% url 'top_up_balance' %}" method="POST">
+        {% csrf_token %}
+        <input type="number" name="top_up" required><button type="submit">Пополнить</button>
+    </form>
+    <h3>Мои лоты:</h3>
+    <ul>
+        {% for lot in user_lots %}
+        <li><a href="{% url 'lot_page' lot.id %}">{{ lot.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <h3>Избранное:</h3>
+    <ul>
+        {% for lot in favorites %}
+        <li><a href="{% url 'lot_page' lot.id %}">{{ lot.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="create-lot">
+    <form action="{% url 'create_lot' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ lot_form.as_p }}
+        <div>
+            <button type="submit">СОЗДАТЬ ЛОТ</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

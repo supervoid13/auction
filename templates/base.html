@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}BASE TITLE{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+</head>
+<body>
+<header>
+    <h1>WELCOME TO THE AUCTION</h1>
+    {% if request.user.is_authenticated %}
+        <p><a href="{% url 'logout' %}">Выйти</a></p>
+    {% else %}
+        <p>Вы не авторизованы на нашем сайте!</p><br>
+        <p><a href="{% url 'login' %}">Войти</a></p>
+    {% endif %}
+</header>
+<nav>
+    <ul class="menu">
+        <li><a href="{% url 'main' %}">Главная</a></li>
+        <li><a href="{% url 'profile' %}">Мой профиль</a></li>
+        <li><a href="{% url 'lots_page' %}">Список лотов</a></li>
+        <li><a href="{% url 'create_lot' %}">Создать лот</a></li>
+    </ul>
+</nav>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="{% url 'edit_lot' lot_id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ lot_form.as_p }}
+    <div>
+        <button type="submit">СОХРАНИТЬ ИЗМЕНЕНИЯ</button>
+    </div>
+</form>
+{% endblock %}

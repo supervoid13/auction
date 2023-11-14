@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="lot-detail">
+    <a href="{% url 'lots_page' %}">Назад к списку</a>
+    <h3>{{lot.title}} - {{lot.highest_price}} $ (текущий покупатель - {{ lot.current_buyer }})</h3>
+    {% if lot.image %}
+        <img src="{{ lot.image.url }}" width="250">
+    {% else %}
+        <img src="{% static 'images/nophoto.png' %}" width="250">
+    {% endif %}
+    <p>{{lot.rating}} rating</p>
+    {% if lot.user != request.user %}
+        {% if lot not in favorites %}
+            <a href="{% url 'add_to_favorites' lot.id %}">Добавить в избранное</a>
+        {% else %}
+            <a href="{% url 'remove_from_favorites' lot.id %}">Убрать из избранного</a>
+        {% endif %}
+    <br><br>
+    {% endif %}
+
+    {% if lot.user != request.user %}
+    <form action="{% url 'offer_price' lot.id %}" method="POST">
+        {% csrf_token %}
+        <input type="number" name="new_price" min="{{ min_price }}" max="{{ max_price }}" step=".01">
+        <button type="submit">Предложить новую цену</button>
+    </form>
+    {% endif %}
+
+    <p>{{lot.description}}</p><br>
+    <div>
+        <form action="{% url 'create_comment' lot.id %}" method="POST">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Отправить</button>
+        </form>
+        {% for comment in comments %}
+        <br>
+        <h3>{{ comment.user.username }}, {{ comment.date_time }}</h3>
+        <p>{{ comment.text }}</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

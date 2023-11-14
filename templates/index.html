@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<section class="mid-content">
+    <h2>Самые популярные лоты:</h2>
+    {% for lot in popular_lots %}
+    <div class="lot">{% if lot.image %}
+        <img src="{{ lot.image.url}}" width="100" height="100">
+        {% else %}
+        <img src="{% static 'images/nophoto.png' %}" width="100" height="100">
+        {% endif %}
+        <h3><a href="{% url 'lot_page' lot.id %}">{{lot.title}}</a> ({{ lot.rating }}) - {{ lot.highest_price }} $</h3>
+        <p>{{lot.description}}</p>
+        <br>
+    </div>
+    {% endfor %}
+    <a href="{% url 'lots_page' %}">Смотреть все</a>
+</section>
+{% endblock %}
